@@ -18,3 +18,9 @@ And finally you can create your own python node to subscribe to images and point
 One example is 
 
     rosrun psa_robot_description driver_example.py
+
+# Installation
+
+sudo apt-get install ros-noetic-velodyne-description
+
+sudo pip3 install rospkg
