@@ -77,7 +77,7 @@
   </gazebo>
 
   <!--Using gazebo or ROS native controller for differential drives.-->
-  <xacro:include filename="$(find softbot_description)/urdf/ros_diff_drive.gazebo.xacro"/>
+  <xacro:include filename="$(find psa_robot_description)/urdf/ros_diff_drive.gazebo.xacro"/>
 
   <gazebo>
     <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">

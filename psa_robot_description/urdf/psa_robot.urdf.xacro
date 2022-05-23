@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<robot name="softbot" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="psa_robot" xmlns:xacro="http://ros.org/wiki/xacro">
   <!--  Xacro description of turtlebot robot waffle pi used to play team hunt.-->
   <!--  Miguel Riem Oliveira-->
   <!--  PARI, November 2020-->
