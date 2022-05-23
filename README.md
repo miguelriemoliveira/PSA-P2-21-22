@@ -8,6 +8,9 @@ First launch the gazebo FNR scenario:
 
     roslaunch psa_fnr gazebo.launch
 
+To launch world wihtout obstacles use:
+
+    roslaunch psa_fnr gazebo.launch world_name:=fnr_no_obstacles.world
 
 Then run the script for spawning your robot:
 
