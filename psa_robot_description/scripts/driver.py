@@ -50,24 +50,60 @@ def imageCallback(msg):
     image_stacked = verticalStacking(image=image_thresh,
                                      y_limits=[reference_y-reference_y_delta, reference_y + reference_y_delta])
 
-    # search from middle to right
-    right_xs = []
-    for x in range(middle_x, width):
+    # search for white pixels in stacked image from lert to right
+    white_xs = []
+    for x in range(0, width):
         if image_stacked[x] > minimum_number_white_pixels:
-            right_xs.append(x)
+            white_xs.append(x)
 
-    # search from middle to left
-    left_xs = []
-    for x in range(middle_x-1, -1, -1):
-        if image_stacked[x] > minimum_number_white_pixels:
-            left_xs.append(x)
+    groups = []
+    # iterate through white_xs and create groups
+    first = True
+    group_idx = 0
+    for x in white_xs:
+        if first:
+            group = {'idx': group_idx, 'xs': [x]}
+            groups.append(group)
+            group_idx += 1
+            first = False
+            continue
 
+        # decide if a new group should be create
+        last_x = groups[-1]['xs'][-1]
+        if abs(x - last_x) > 1:  # create new group
+            group = {'idx': group_idx, 'xs': [x]}
+            groups.append(group)
+            group_idx += 1
+        else:
+            groups[-1]['xs'].append(x)
+
+    # Compute the average x for each group
+    for group in groups:
+        group['xavg'] = sum(group['xs']) / len(group['xs'])
+
+    # Compute the distance between the average and the middle x
+    for group in groups:
+        group['dist_to_middle'] = abs(middle_x - group['xavg'])
+
+    # select middle line as the group which is closed to the middle of the image
+    smallest_distance = 9999
+    for group in groups:
+        if group['dist_to_middle'] < smallest_distance:
+            smallest_distance = group['dist_to_middle']
+            middle_line = group
+
+    # print(middle_line)
+
+    # -------------------------------------------
     # Drawing
-    for x in right_xs:
+    # -------------------------------------------
+    for x in white_xs:
         cv2.line(image_gui, (x, reference_y), (x, reference_y), (0, 0, 255), 4)
 
-    for x in left_xs:
-        cv2.line(image_gui, (x, reference_y), (x, reference_y), (255, 0, 0), 4)
+    point = (int(middle_line['xavg']), reference_y)
+    color = (0, 255, 255)
+    cv2.line(image_gui, point, point, color, 4)
+    cv2.putText(image_gui, 'ML', point, cv2.FONT_HERSHEY_SIMPLEX, 1, color, 1, cv2.LINE_AA)
 
     # make a driving decision
     angle = 0
