@@ -18,19 +18,12 @@ from cv_bridge import CvBridge, CvBridgeError
 
 def verticalStacking(image, y_limits):
 
-    # gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    gray_img = image
-
-    h, w = gray_img.shape
-
-    sampled_image = gray_img[y_limits[0]:y_limits[1], :]
+    sampled_image = image[y_limits[0]:y_limits[1], :]
 
     cv2.imshow('test', sampled_image)
 
     stack = np.sum(sampled_image, axis=0) / 255
 
-    print(stack)
-
     return stack
 
-    return stack
+    
