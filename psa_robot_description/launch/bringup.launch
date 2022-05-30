@@ -5,6 +5,8 @@
     <arg name="x_pos" default="0.25"/>
     <arg name="y_pos" default="-1.54"/>
     <arg name="z_pos" default="0.1"/>
+    <arg name="visualize" default="true"/>
+    <arg name="teleop" default="true"/>
 
     <!--Load robot xacro into robot_description ros parameter.-->
     <param name="robot_description" command="$(find xacro)/xacro '$(find psa_robot_description)/urdf/psa_robot.urdf.xacro' name:=$(arg name) color:=$(arg color)"/>
@@ -20,12 +22,17 @@
         <arg name="z_pos" default="$(arg z_pos)"/>
     </include>
 
+
+     <group if="$(arg teleop)">
     <include file="$(find psa_robot_description)/launch/teleop_rqt.launch">
         <arg name="name" value="$(arg name)"/>
     </include>
+    </group>
 
+     <group if="$(arg visualize)">
     <include file="$(find psa_robot_description)/launch/visualize.launch">
     </include>
+    </group>
 
 
 </launch>
