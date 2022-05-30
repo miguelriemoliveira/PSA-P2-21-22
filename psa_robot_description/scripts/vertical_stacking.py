@@ -27,3 +27,4 @@ def verticalStacking(image, y_limits):
     return stack
 
     
+
