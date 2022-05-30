@@ -13,7 +13,7 @@ from sensor_msgs.msg import Image
 # ROS Image message -> OpenCV2 image converter
 from cv_bridge import CvBridge, CvBridgeError
 
-from psa_robot_description.src.vertical_stacking import verticalStacking
+from psa_robot_description.scripts.vertical_stacking import verticalStacking
 
 
 # Global variables
@@ -37,9 +37,7 @@ def imageCallback(msg):
     cv2.waitKey(20)
 
     # How to process the image to define the best angle and speed?
-    stacked = verticalStacking(image = cv2_img, y_limits = [250,280])
-    
-    
+    stacked = verticalStacking(image=cv2_img, y_limits=[250, 280])
 
     # make a driving decision
     angle = 0

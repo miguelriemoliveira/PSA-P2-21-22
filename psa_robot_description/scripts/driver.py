@@ -7,6 +7,7 @@ import rospy
 
 # OpenCV2 for saving an image
 import cv2
+from vertical_stacking import verticalStacking
 from geometry_msgs.msg import Twist
 
 # ROS Image message
@@ -39,20 +40,26 @@ def imageCallback(msg):
     # Save your OpenCV2 image as a jpeg
 
     # How to process the image to define the best angle and speed?
-    reference_y = 190
+
+    reference_y = 260
+    reference_y_delta = 20
     height, width = image_thresh.shape
     middle_x = int(width / 2)
+    minimum_number_white_pixels = 5
+
+    image_stacked = verticalStacking(image=image_thresh,
+                                     y_limits=[reference_y-reference_y_delta, reference_y + reference_y_delta])
 
     # search from middle to right
     right_xs = []
     for x in range(middle_x, width):
-        if image_thresh[reference_y, x] == 255:
+        if image_stacked[x] > minimum_number_white_pixels:
             right_xs.append(x)
 
     # search from middle to left
     left_xs = []
     for x in range(middle_x-1, -1, -1):
-        if image_thresh[reference_y, x] == 255:
+        if image_stacked[x] > minimum_number_white_pixels:
             left_xs.append(x)
 
     # Drawing
@@ -64,7 +71,7 @@ def imageCallback(msg):
 
     # make a driving decision
     angle = 0
-    speed = 0
+    speed = 0.1
 
     # cv2.imshow('image_rgb', image_rgb)
     # cv2.imshow('image_gray', image_gray)
@@ -77,7 +84,7 @@ def imageCallback(msg):
     twist.linear.x = speed
     twist.angular.z = angle
     global publisher
-    publisher.publish(twist)
+    # publisher.publish(twist)
 
 
 def main():
