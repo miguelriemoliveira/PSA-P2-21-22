@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "../../../workingcopy/psa_21-22"
+		},
+		{
+			"path": "../../../workingcopy/psa_21-22_solutions"
 		}
 	],
 	"settings": {
