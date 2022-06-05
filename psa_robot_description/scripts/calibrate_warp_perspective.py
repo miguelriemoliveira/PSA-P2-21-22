@@ -16,6 +16,7 @@ from sensor_msgs.msg import Image
 
 # ROS Image message -> OpenCV2 image converter
 from cv_bridge import CvBridge, CvBridgeError
+import numpy as np
 
 # Global variables
 # Instantiate CvBridge
@@ -49,6 +50,33 @@ def clickEvent(event, x, y, flags, params):
         global clicked_ys
         clicked_xs.append(x)
         clicked_ys.append(y)
+    
+    if event == cv2.EVENT_RBUTTONDOWN:
+        if len(clicked_xs)==4:
+            print('right click')
+            p1 = [clicked_xs[0], clicked_ys[0]]
+            p2 = [clicked_xs[1], clicked_ys[1]]
+            p3 = [clicked_xs[2], clicked_ys[2]]
+            p4 = [clicked_xs[3], clicked_ys[3]]
+            
+            d12 = np.linalg.norm([p1[0]-p2[0], p1[1]-p2[1]])
+            d43 = np.linalg.norm([p4[0]-p3[0], p4[1]-p3[1]])
+            
+            coeff = 0.5
+            
+            p2c = [p1[0], p1[1]-coeff*d12]
+            p3c = [p4[0], p4[1]-coeff*d43]
+            
+            input_points = np.float32([p1,p2,p3,p4])
+            output_points = np.float32([p1,p2c,p3c,p4])
+            
+            M = cv2.getPerspectiveTransform(input_points, output_points)
+            
+            finalimage = cv2.warpPerspective(image_rgb, M, [800, 320])
+            cv2.imshow('ipm', finalimage)
+            cv2.waitKey(0)
+            print('save file to disk')
+            np.save('ipm_file.npy', M)
 
 
 def main():
