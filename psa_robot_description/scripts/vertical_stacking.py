@@ -20,11 +20,8 @@ def verticalStacking(image, y_limits):
 
     sampled_image = image[y_limits[0]:y_limits[1], :]
 
-    cv2.imshow('test', sampled_image)
+    # cv2.imshow('test', sampled_image)
 
     stack = np.sum(sampled_image, axis=0) / 255
 
     return stack
-
-    
-

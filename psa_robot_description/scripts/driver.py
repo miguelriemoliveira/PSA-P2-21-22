@@ -33,7 +33,7 @@ class Driver():
         image_topic = "/front_camera/rgb/image_raw"
 
         # Set up your subscriber and define its callback
-        self.suscriber = rospy.Subscriber(image_topic, Image, self.imageCallback)
+        self.subscriber = rospy.Subscriber(image_topic, Image, self.imageCallback)
         self.publisher = rospy.Publisher('cmd_vel', Twist, queue_size=1)
         self.timer = rospy.Timer(rospy.Duration(0.1), self.decisionCallback)
 

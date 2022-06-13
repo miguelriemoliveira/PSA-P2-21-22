@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+    <!--arguments-->
+    <arg name="simulation" default="false"/>
+    <param name="/use_sim_time" value="$(arg simulation)"/>
+
+    <!--To record only raw data-->
+    <node name="rosbag_record" pkg="rosbag" type="record" output="screen" args="
+        /clock
+        /cmd_vel
+        /front_camera/rgb/camera_info
+        /front_camera/rgb/image_raw
+        /joint_states
+        /lidar3d/points
+        /odom
+        /tf
+        /tf_static
+        -o /tmp/bag_file.bag">
+    </node>
+
+</launch>
